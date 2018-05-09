@@ -3,10 +3,11 @@ package main
 import (
 	"bufio"
 	"crypto"
-	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -17,16 +18,35 @@ import (
 )
 
 var (
-	pattern = regexp.MustCompile(`https://acme-v01\.api\.letsencrypt\.org/acme/authz/[a-zA-Z0-9_-]+`)
+	pattern *regexp.Regexp
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Println("Usage: clear-authz path-to-certbot-private_key.json")
-		os.Exit(1)
+	v1Server := os.Getenv("CLEAR_AUTHZ_SERVER")
+	if v1Server == "" {
+		v1Server = "acme-v01.api.letsencrypt.org"
 	}
 
-	pkBuf, err := ioutil.ReadFile(os.Args[1])
+	var keyPath string
+
+	if len(os.Args) < 2 {
+		files, err := filepath.Glob("/etc/letsencrypt/accounts/" + v1Server + "/directory/*/private_key.json")
+		if err != nil {
+			log.Fatalf("Failed to look in Certbot directory path: %v", err)
+		}
+
+		if len(files) == 0 {
+			log.Fatalf("Could not find any Certbot private keys for directory %s", v1Server)
+		}
+		keyPath = files[0]
+	} else {
+		keyPath = os.Args[1]
+	}
+	log.Printf("Using %s for private key for %s", keyPath, v1Server)
+
+	pattern := regexp.MustCompile("https://" + regexp.QuoteMeta(v1Server) + "/acme/authz/[a-zA-Z0-9_-]+")
+
+	pkBuf, err := ioutil.ReadFile(keyPath)
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +71,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Checking %d authzs to see if they are pending ...\n", len(m))
+	log.Printf("Checking %d authzs to see if they are pending ...", len(m))
 
 	cl := &acme.Client{
 		Key: k.Key.(crypto.Signer),
@@ -61,7 +81,7 @@ func main() {
 		authz, err := cl.GetAuthorization(context.Background(), authURL)
 		if err != nil {
 			if !strings.Contains(err.Error(), "urn:acme:error:malformed: Expired authorization") {
-				fmt.Printf("Failed to fetch authz %s: %v\n", authURL, err)
+				log.Printf("Failed to fetch authz %s: %v", authURL, err)
 			}
 			continue
 		}
@@ -70,9 +90,9 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("Found pending authz at %s, will accept first challenge\n", authURL)
+		log.Printf("Found pending authz at %s, will accept first challenge", authURL)
 
 		resp, err := cl.Accept(context.Background(), authz.Challenges[0])
-		fmt.Printf("Accepted challenge: %+v %+v\n", resp, err)
+		log.Printf("Accepted challenge: %+v %+v", resp, err)
 	}
 }

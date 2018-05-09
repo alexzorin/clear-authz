@@ -11,3 +11,4 @@ deploy:
   file: clear-authz
   on:
     repo: alexzorin/clear-authz
+    tags: true
