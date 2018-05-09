@@ -1,17 +1,13 @@
 language: go
 go:
-  - "1.10"
+- '1.10'
 script:
-  - go get -t ./...
-  - go build -o clear-authz clear-authz.go
-
+- go get -t ./...
+- go build -o clear-authz clear-authz.go
 deploy:
   provider: releases
-  skip_cleanup: true
   api_key:
-    secure: wHqq6Em56Dhkq4GHqdTXfNWB1NU2ixD0/z88Hu31MFXc+Huz5p6np0PUNBOvO9jSFpSzrSGFpsD5lkExAU9rBOI9owSRiEHpR1krIFbMmCboNqNr1uXxzxam9NWLgH8ltL2LNX3hp5teYnNpE4EhIDsGqORR4BrgXfH4eK7mvj/93kDRF2Wxt1slRh9VlxPSQEUxJ1iQNy3lbZ6U2+wouD8TaaJFgzPtueMyyIj2ASQdSlWMRyCVXJPKKgbRd5jLo2XHAWmmDb9mC8u8RS5QlB1klJjGCOl7gNC0KHYknHk6sUVpgIdnmszQBdVMlrZ6yToFDSFI28pj0PDmpb3KFfLauatyQ/bOfDoJFQQWgxyy30du89PawLmqeMoIXUQoA8IWF3nl/YhD+xsLCL1UH3kZdVZStwS/EhMcKqXBPn/AFi1Vbh7m+OMJAVvZp3xnFDe/H8tymczOWy4vDnyfXZQagLMsTouS/SosCFjjeL/Rdz6AEcQRq5bYAiQBhjVwlobNxZSMXWatNSaGz3z78dPEx9qfHnKixmBTacrJd6NlBhWH1kvg1c7TT2zlPxt6XTtsq7Ts/oKNF2iXXhw8HuzZv1idCiWfxobdajZE3EY+8akR060ktT4KEgRmCC/0h6ncPVT0Vaba1XZvbjlraol/p3tswXgGodPsKL87AgM=
-  file:
-  - clear-authz
+    secure: pM5+tzZ1wKl8r31NhhsktfR1rM1odS7BPK3xorvGczRWBKAGUrEbGWXKnHqJjLA7qQxB5EO5txmZ0kMDoh/JMT4uii4U4bz5jfBkI+/5X4J7FwOqlQ73HxuwrB3Q8TQVwk7X5Gn/LKMY5Y9IVnuPzRe92c6NgjVJHhIl5AFOgZc7uLMqwBXjK+MODVw3n7AgzI558DwnUXuSvb/p7rvT8EE4zMWr1JRiPoE/qysF417gJa+AdVaqVl7lOkLnqv0fisJCOH/C4oOXjlUH00o4x9KtcZCwujsMAUjhscNerRgAVm31t6IF7BfaS5m/dGSDmTOHa5aax2N1BG56kwEqzT2ptzykMqw8Eszqsv4DAtkgO8tywOXqyGOXHGrryag76Hv/3J2nLbxrM1gjIp+3W5YjOfJlWupKjBIWw+W21/5AEzqkRKAqAJTqSGoV9qqeyICkQLYn2u+ZWHhQ4yM8QRSIOrC5yZhssyQwtuxA2J3oI3hSs+ugEWnrpwxIDV33zp2NQQapSShR4KTeGQq8Dt0p6rCBU/XFZstC1lADwqeJM0xYlcKlQqHe/CDNLV4jx9lgK6TWSmsNXXPd775o5rF/S4Tee7KMw2GlNDzSZsY0cCKmUeEHQbABVoMwkBpQdN04OVwgISDW8c+xB1VgmHWEvVafh6noIcsR6aQvZjI=
+  file: clear-authz
   on:
     repo: alexzorin/clear-authz
-    tags: true
