@@ -4,7 +4,7 @@ A simple tool to clear pending ACME v1 authorizations based upon a Certbot priva
 
 ## A better alternative
 
-You may want to check out https://tools.letsdebug.net/tools/clear-authz instead. It runs in your browser and supports both ACME v1 and ACME v2.
+You may want to check out https://tools.letsdebug.net/clear-authz instead. It runs in your browser and supports both ACME v1 and ACME v2.
 
 ## Installation
 
