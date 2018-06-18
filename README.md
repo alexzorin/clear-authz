@@ -2,6 +2,10 @@
 
 A simple tool to clear pending ACME v1 authorizations based upon a Certbot private ACME account key (in `private_key.json` format) and Certbot logs (from `/var/log/letsencrypt`).
 
+## A better alternative
+
+You may want to check out https://tools.letsdebug.net/tools/clear-authz instead. It runs in your browser and supports both ACME v1 and ACME v2.
+
 ## Installation
 
 Please download the Linux amd64 binary from the releases page. Otherwise, you are on your own to build it from source:
